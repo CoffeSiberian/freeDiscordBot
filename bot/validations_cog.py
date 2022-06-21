@@ -26,8 +26,8 @@ class validaciones():
     #valida si existe musica actualmente en reproduccion
     async def isPlaying(self, ctx):
         if await self.isConected(ctx):
-            if ctx.voice_client.is_playing() is False:
-                if ctx.voice_client.is_paused() is False:
+            if ctx.voice_client.is_playing() == False:
+                if ctx.voice_client.is_paused() == False:
                     return False
             return True 
         return False
