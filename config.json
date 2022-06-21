@@ -1,0 +1,8 @@
+{
+    "DISCORD_TOKEN" : "",
+    "volumen" : 8,
+    "ffmpeg_dir" : "",
+    "owner_id" : 0,
+    "adm_role_id" : 0,
+    "prefix" : "!"
+}
