@@ -1,4 +1,3 @@
-from operator import truediv
 from discord.ext import commands
 
 from functions.dirt import getConf
@@ -21,10 +20,24 @@ class musica(commands.Cog):
 
     @commands.command()
     async def conectar(self, ctx):
-        status = await self.validacion.isConected(ctx)
-        if await self.validacion.sameChannel(ctx) != True:
-            return
-        if status != False:
-            if status.is_connected() == True:
-                return
+        if await self.validacion.isConectedChannel(ctx) != True:
+            return await ctx.send("Conecta primero a un canal "+str(ctx.author.mention))
+        if await self.validacion.isConected(ctx):
+            return await ctx.send("Ya me encuentro conectado "+str(ctx.author.mention))
         await ctx.author.voice.channel.connect()
+    
+    @commands.command()
+    async def desconectar(self, ctx):
+        if await self.validacion.isConected(ctx):
+            if await self.validacion.sameChannel(ctx) != True:
+                return
+            if await self.validacion.isPlaying(ctx):
+                await self.stop(ctx)
+            return await ctx.voice_client.disconnect()
+        await ctx.send("No me encuentro conectado a un canal actualmente "+str(ctx.author.mention))
+
+    @commands.command()
+    async def stop(self, ctx):
+        if await self.validacion.isConected(ctx):
+            if await self.validacion.sameChannel(ctx):
+                ctx.voice_client.stop()
