@@ -5,6 +5,7 @@ from functions.dirt import getConf
 config = getConf()
 
 class validaciones:
+    
     def __init__(self, bot) -> None:
         self.bot = bot
         self.prefix = config['prefix']

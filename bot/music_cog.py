@@ -66,7 +66,7 @@ class Musica(commands.Cog):
     @commands.command()
     async def play(self, ctx, *args):
         parameter = " ".join(args[:])
-        if parameter != None:
+        if parameter == '':
             if self.validacion.isUrl(parameter):
                 try:
                     link = parameter.split(sep='.')[1]
