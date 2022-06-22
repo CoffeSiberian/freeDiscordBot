@@ -1,8 +1,13 @@
 import validators
 
+from functions.dirt import getConf
+
+config = getConf()
+
 class validaciones:
     def __init__(self, bot) -> None:
         self.bot = bot
+        self.prefix = config['prefix']
 
     #validar si la URL es valida o no
     def isUrl(url) -> bool:
@@ -38,6 +43,24 @@ class validaciones:
             return True 
         return False
     
+    #validar si se puede reproducir musica o no
+    async def isPossiblePlay(self, ctx) -> bool:
+        if await self.isPlaying(ctx) == False:
+            if await self.isConectedChannel(ctx) == False:
+                await ctx.send(f'Tienes que conectar en el canal que me encuentro {str(ctx.author.mention)}')
+                return False
+            elif await self.isConected(ctx) == False:
+                await ctx.send(f'Utiliza {self.prefix}conectar primero {str(ctx.author.mention)}')
+                return False
+            elif await self.isConected(ctx):
+                if await self.sameChannel(ctx) != True:
+                    return False
+        else:
+            await ctx.send(f'Ya me encuentro reproduciendo música {str(ctx.author.mention)} Utiliza {self.prefix}stop')
+            return False
+        return True
+
+    #identificar que tipo de sonido se necesita
     async def whatIs(self, ctx, str):
         if self.isUrl(str):
             try:

@@ -23,25 +23,15 @@ class MusicaYT:
         return True
 
     async def yt(self, ctx, url='None'):
-        v = await self.validacion.isConected(ctx)
-        if await self.validacion.isConectedChannel(ctx) != True:
-            return
-        elif v == False:
-            await ctx.send(f'Utiliza {self.prefix}conectar primero {str(ctx.author.mention)}')
-            return
-        elif v != False:
-            if await self.validacion.sameChannel(ctx) != True:
-                return
-        if url != 'None':
-            if self.validacion.isUrl(url):
-                yplay = self.apiyt.findVideoInfoURL(url)
-                if await self.afterPlay(ctx, yplay):
-                    await self.playSound(ctx, yplay['url'])
-                    return await ctx.send(f'Escuchas: {yplay["title"]} - Volumen: {str(self.voldef)}')
-            else:
-                yplay = self.apiyt.search(url)
-                if await self.afterPlay(ctx, yplay):
-                    await self.playSound(ctx, yplay["entries"][0]["url"])
-                    return await ctx.send(f'Escuchas: {yplay["entries"][0]["title"]} - Volumen: {str(self.voldef)}')
-        else:
-            return await ctx.send(f'Tienes que usar {self.prefix}yt [URL] {str(ctx.author.mention)}')
+        if self.validacion.isPossiblePlay(ctx):
+            if url != 'None':
+                if self.validacion.isUrl(url):
+                    yplay = self.apiyt.findVideoInfoURL(url)
+                    if await self.afterPlay(ctx, yplay):
+                        await self.playSound(ctx, yplay['url'])
+                        return await ctx.send(f'Escuchas: {yplay["title"]} - Volumen: {str(self.voldef)}')
+                else:
+                    yplay = self.apiyt.search(url)
+                    if await self.afterPlay(ctx, yplay):
+                        await self.playSound(ctx, yplay["entries"][0]["url"])
+                        return await ctx.send(f'Escuchas: {yplay["entries"][0]["title"]} - Volumen: {str(self.voldef)}')

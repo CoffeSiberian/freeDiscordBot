@@ -74,18 +74,9 @@ class Musica(commands.Cog):
 
     @commands.command()
     async def play(self, ctx, stream='None'):
-        if await self.validacion.isPlaying(ctx) == False:
-            if await self.validacion.isConectedChannel(ctx) == False:
-                return
-            elif await self.validacion.isConected(ctx) == False:
-                return await ctx.send(f'Utiliza {self.prefix}conectar primero {str(ctx.author.mention)}')
-            elif await self.validacion.isConected(ctx):
-                if await self.validacion.sameChannel(ctx) != True:
-                    return
-                if stream != 'None':
-                    await self.pmusic.playSound(ctx, stream)
-                    await ctx.send(f'Escuchas: {stream} - Volumen: {str(self.voldef)}')
-                else:
-                    await ctx.send(f'Tienes que usar {self.prefix}play [URL-stream] {str(ctx.author.mention)}')
-        else:
-            await ctx.send(f'Ya me encuentro reproduciendo música {str(ctx.author.mention)} Utiliza {self.prefix}stop')
+        if await self.validacion.isPossiblePlay(ctx):
+            if stream != 'None':
+                await self.pmusic.playSound(ctx, stream)
+                await ctx.send(f'Escuchas: {stream} - Volumen: {str(self.voldef)}')
+            else:
+                await ctx.send(f'Tienes que usar {self.prefix}play [lo que buscas] {str(ctx.author.mention)}')
