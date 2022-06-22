@@ -1,6 +1,6 @@
 import validators
 
-class validaciones():
+class validaciones:
     def __init__(self, bot) -> None:
         self.bot = bot
 
@@ -37,3 +37,15 @@ class validaciones():
                     return False
             return True 
         return False
+    
+    async def whatIs(self, ctx, str):
+        if self.isUrl(str):
+            try:
+                link = str.split(sep='.')[1]
+                if link == 'youtube':
+                    pass
+                elif link == 'spotify':
+                    pass
+            except IndexError:
+                pass
+        

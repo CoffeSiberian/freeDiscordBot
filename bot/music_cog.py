@@ -1,27 +1,21 @@
 from discord.ext import commands
-import discord
 
 from functions.dirt import getConf
-from bot.validations_cog import validaciones
+from bot.nocogs.validations import validaciones
+from bot.nocogs.youtube_music import MusicaYT
+from bot.nocogs.play_sound import PlaySoundBot
 
 config = getConf()
 
 class Musica(commands.Cog):
 
     def __init__(self, bot) -> None:
-        self.FFMPEG_OPTIONS = {
-        'before_options':
-        '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 
-        'options': '-vn'
-        }
-        self.ffmpeg = config['ffmpeg_dir']
         self.voldef = config['volumen']
         self.prefix = config['prefix']
         self.bot = bot
         self.validacion = validaciones(bot)
-
-    def pcmAudio(self, url):
-        return discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(source=url, executable=self.ffmpeg, **self.FFMPEG_OPTIONS))
+        self.pmusic = PlaySoundBot()
+        self.musicaYt = MusicaYT(bot, self.pmusic)
 
     @commands.command()
     async def conectar(self, ctx):
@@ -89,8 +83,7 @@ class Musica(commands.Cog):
                 if await self.validacion.sameChannel(ctx) != True:
                     return
                 if stream != 'None':
-                    ctx.voice_client.play(self.pcmAudio(stream))
-                    ctx.voice_client.source.volume = self.voldef/100
+                    await self.pmusic.playSound(ctx, stream)
                     await ctx.send(f'Escuchas: {stream} - Volumen: {str(self.voldef)}')
                 else:
                     await ctx.send(f'Tienes que usar {self.prefix}play [URL-stream] {str(ctx.author.mention)}')
