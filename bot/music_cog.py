@@ -64,7 +64,8 @@ class Musica(commands.Cog):
             await ctx.send(f'Tienes que ingresar un volumen entre 1 y 100 {str(ctx.author.mention)}')
 
     @commands.command()
-    async def play(self, ctx, parameter=None):
+    async def play(self, ctx, *args):
+        parameter = " ".join(args[:])
         if parameter != None:
             if self.validacion.isUrl(parameter):
                 try:
