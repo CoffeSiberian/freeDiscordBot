@@ -1,6 +1,5 @@
 from discord.ext import commands
 import discord
-import validators
 
 from functions.dirt import getConf
 from bot.validations_cog import validaciones
@@ -21,7 +20,7 @@ class MusicaYT(commands.Cog):
         self.prefix = config['prefix']
         self.bot = bot
         self.validacion = validaciones(bot)
-        self.apiyt =youtube()
+        self.apiyt = youtube()
 
     def pcmAudio(self, url):
         return discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(source=url, executable=self.ffmpeg, **self.FFMPEG_OPTIONS))
@@ -46,7 +45,7 @@ class MusicaYT(commands.Cog):
             if await self.validacion.sameChannel(ctx) != True:
                 return
         if url != 'None':
-            if validators.url(url):
+            if self.validacion.isUrl(url):
                 yplay = self.apiyt.findVideoInfoURL(url)
                 if await self.afterPlay(ctx, yplay):
                     await self.yt_play(ctx, yplay['url'])

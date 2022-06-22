@@ -6,7 +6,7 @@ from bot.validations_cog import validaciones
 
 config = getConf()
 
-class musica(commands.Cog):
+class Musica(commands.Cog):
 
     def __init__(self, bot) -> None:
         self.FFMPEG_OPTIONS = {
