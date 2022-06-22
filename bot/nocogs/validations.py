@@ -59,3 +59,18 @@ class validaciones:
             await ctx.send(f'Ya me encuentro reproduciendo música {str(ctx.author.mention)} Utiliza {self.prefix}stop')
             return False
         return True
+    
+    #validar si se puede cambiar el volumen
+    async def isPossibleChangeVol(self, ctx) -> bool:
+        if await self.isConected(ctx) == False:
+            await ctx.send(f'No me encuentro conectado a un canal actualmente {str(ctx.author.mention)}')
+            return False
+        elif await self.isConectedChannel(ctx) == False:
+            return False
+        if ctx.voice_client.is_playing():
+            if await self.sameChannel(ctx) != True:
+                return False
+        else:
+            await ctx.send(f'No me encuentro reproduciendo música {str(ctx.author.mention)}')
+            return False
+        return True

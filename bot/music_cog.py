@@ -1,4 +1,3 @@
-from nturl2path import url2pathname
 from discord.ext import commands
 
 from functions.dirt import getConf
@@ -58,20 +57,11 @@ class Musica(commands.Cog):
     
     @commands.command()
     async def vol(self, ctx, volume=-1):
-        if await self.validacion.isConected(ctx) == False:
-            return await ctx.send(f'No me encuentro conectado a un canal actualmente {str(ctx.author.mention)}')
-        elif await self.validacion.sameChannel(ctx) != True:
-            return
-        if ctx.voice_client.is_playing():
-            if await self.validacion.sameChannel(ctx) != True:
-                return
+        if self.validacion.isPossibleChangeVol(ctx):
             if volume >=1 and volume <= 100: 
                 ctx.voice_client.source.volume = volume/100
-                return
-        else:
-            await ctx.send(f'No me encuentro reproduciendo música {str(ctx.author.mention)}')
-            return
-        return await ctx.send(f'Tienes que ingresar un volumen entre 1 y 100 {str(ctx.author.mention)}')
+                return True
+            await ctx.send(f'Tienes que ingresar un volumen entre 1 y 100 {str(ctx.author.mention)}')
 
     @commands.command()
     async def play(self, ctx, parameter=None):
