@@ -57,7 +57,7 @@ class Musica(commands.Cog):
     
     @commands.command()
     async def vol(self, ctx, volume=-1):
-        if self.validacion.isPossibleChangeVol(ctx):
+        if await self.validacion.isPossibleChangeVol(ctx):
             if volume >=1 and volume <= 100: 
                 ctx.voice_client.source.volume = volume/100
                 return True
