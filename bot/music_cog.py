@@ -1,3 +1,4 @@
+from nturl2path import url2pathname
 from discord.ext import commands
 
 from functions.dirt import getConf
@@ -73,10 +74,25 @@ class Musica(commands.Cog):
         return await ctx.send(f'Tienes que ingresar un volumen entre 1 y 100 {str(ctx.author.mention)}')
 
     @commands.command()
-    async def play(self, ctx, stream='None'):
+    async def play(self, ctx, parameter=None):
+        if parameter != None:
+            if self.validacion.isUrl(parameter):
+                try:
+                    link = parameter.split(sep='.')[1]
+                    if link == 'youtube':
+                        return await self.musicaYt.ytUrl(ctx, parameter)
+                    elif link == 'spotify':
+                        return 'Spotify not Working'
+                    else:
+                        return await self.urlPlay(ctx, parameter)
+                except IndexError:
+                    pass
+        else:
+            await ctx.send(f'Tienes que usar {self.prefix}play [lo que buscas] {str(ctx.author.mention)}')
+            return False
+        await self.musicaYt.ytSearch(ctx, parameter)
+    
+    async def urlPlay(self, ctx, stream):
         if await self.validacion.isPossiblePlay(ctx):
-            if stream != 'None':
-                await self.pmusic.playSound(ctx, stream)
-                await ctx.send(f'Escuchas: {stream} - Volumen: {str(self.voldef)}')
-            else:
-                await ctx.send(f'Tienes que usar {self.prefix}play [lo que buscas] {str(ctx.author.mention)}')
+            await self.pmusic.playSound(ctx, stream)
+            await ctx.send(f'Escuchas: {stream} - Volumen: {str(self.voldef)}')

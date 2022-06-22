@@ -1,4 +1,4 @@
-from yt_dlp import YoutubeDL
+from youtube_dl import YoutubeDL
 
 class youtube:
     def __init__(self) -> None:

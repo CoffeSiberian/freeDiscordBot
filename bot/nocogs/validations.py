@@ -10,7 +10,7 @@ class validaciones:
         self.prefix = config['prefix']
 
     #validar si la URL es valida o no
-    def isUrl(url) -> bool:
+    def isUrl(self, url) -> bool:
         return validators.url(url)
 
     #validar si ya se encuentra el bot conectado a un canal de voz
@@ -59,16 +59,3 @@ class validaciones:
             await ctx.send(f'Ya me encuentro reproduciendo música {str(ctx.author.mention)} Utiliza {self.prefix}stop')
             return False
         return True
-
-    #identificar que tipo de sonido se necesita
-    async def whatIs(self, ctx, str):
-        if self.isUrl(str):
-            try:
-                link = str.split(sep='.')[1]
-                if link == 'youtube':
-                    pass
-                elif link == 'spotify':
-                    pass
-            except IndexError:
-                pass
-        
