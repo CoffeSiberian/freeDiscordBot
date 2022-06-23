@@ -2,8 +2,11 @@ from discord.ext import commands
 
 from functions.dirt import getConf
 from bot.nocogs.validations import validaciones
-from bot.nocogs.youtube_music import MusicaYT
 from bot.nocogs.play_sound import PlaySoundBot
+from bot.nocogs.spotify_music import MusicaSP
+from bot.nocogs.youtube_music import MusicaYT
+from apis.youtubeapi import youtube
+from apis.spotifyapi import spotifyPlay
 
 config = getConf()
 
@@ -12,10 +15,15 @@ class Musica(commands.Cog):
     def __init__(self, bot) -> None:
         self.voldef = config['volumen']
         self.prefix = config['prefix']
+        self.spClienId = config['spotify_clienId']
+        self.spClienSecret = config['spotify_cliensecret']
         self.bot = bot
         self.validacion = validaciones(bot)
         self.pmusic = PlaySoundBot()
-        self.musicaYt = MusicaYT(bot, self.pmusic)
+        self.apiyt = youtube()
+        self.apisp = spotifyPlay(self.spClienId, self.spClienSecret)
+        self.musicaSp = MusicaSP(bot, self.pmusic, self.apiyt, self.apisp)
+        self.musicaYt = MusicaYT(bot, self.pmusic, self.apiyt)
 
     @commands.command()
     async def conectar(self, ctx):
@@ -73,7 +81,7 @@ class Musica(commands.Cog):
                     if link == 'youtube':
                         return await self.musicaYt.ytUrl(ctx, parameter)
                     elif link == 'spotify':
-                        return 'Spotify not Working'
+                        return await self.musicaSp.valid(ctx, parameter)
                     else:
                         return await self.urlPlay(ctx, parameter)
                 except IndexError:

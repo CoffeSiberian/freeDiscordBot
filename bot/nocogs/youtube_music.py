@@ -1,18 +1,17 @@
 from functions.dirt import getConf
 from bot.nocogs.validations import validaciones
-from apis.youtubeapi import youtube
 
 config = getConf()
 
 class MusicaYT:
 
-    def __init__(self, bot, playSound):
+    def __init__(self, bot, playSound, yt_instance):
         self.voldef = config['volumen']
         self.prefix = config['prefix']
         self.bot = bot
         self.pmusic = playSound
         self.validacion = validaciones(bot)
-        self.apiyt = youtube()
+        self.apiyt = yt_instance
 
     async def afterPlay(self, ctx, yplay):
         if yplay == None:
