@@ -19,8 +19,8 @@ class Musica(commands.Cog):
         self.spClienSecret = config['spotify_cliensecret']
         self.bot = bot
         self.validacion = validaciones(bot)
-        self.pmusic = PlaySoundBot()
         self.apiyt = youtube()
+        self.pmusic = PlaySoundBot(bot, self.apiyt)
         self.apisp = spotifyPlay(self.spClienId, self.spClienSecret)
         self.musicaSp = MusicaSP(bot, self.pmusic, self.apiyt, self.apisp)
         self.musicaYt = MusicaYT(bot, self.pmusic, self.apiyt)
@@ -78,7 +78,7 @@ class Musica(commands.Cog):
             if self.validacion.isUrl(parameter):
                 try:
                     link = parameter.split(sep='.')[1]
-                    if link == 'youtube':
+                    if link == 'youtube' or link == 'be':
                         return await self.musicaYt.ytUrl(ctx, parameter)
                     elif link == 'spotify':
                         return await self.musicaSp.valid(ctx, parameter)
@@ -90,7 +90,7 @@ class Musica(commands.Cog):
             await ctx.send(f'Tienes que usar {self.prefix}play [lo que buscas] {str(ctx.author.mention)}')
             return False
         await self.musicaYt.ytSearch(ctx, parameter)
-    
+
     async def urlPlay(self, ctx, stream):
         if await self.validacion.isPossiblePlay(ctx):
             await self.pmusic.playSound(ctx, stream)
