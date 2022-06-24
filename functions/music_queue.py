@@ -2,7 +2,8 @@ import random
 
 class Queue:
 
-    def __init__(self):
+    def __init__(self, guildId):
+        self.guildId = guildId
         self._queue = []
         self.position = 0
 
@@ -44,7 +45,7 @@ class Queue:
         self.position += 1
         try:
             elemen = self._queue[self.position]
-            return elemen
+            return elemen, True
         except IndexError:
             self.empty()
             return False

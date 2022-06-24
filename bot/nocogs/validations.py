@@ -46,19 +46,15 @@ class validaciones:
     
     #validar si se puede reproducir musica o no
     async def isPossiblePlay(self, ctx) -> bool:
-        if await self.isPlaying(ctx) == False:
-            if await self.isConectedChannel(ctx) == False:
-                await ctx.send(f'Tienes que conectar en el canal que me encuentro {str(ctx.author.mention)}')
-                return False
-            elif await self.isConected(ctx) == False:
-                await ctx.send(f'Utiliza {self.prefix}conectar primero {str(ctx.author.mention)}')
-                return False
-            elif await self.isConected(ctx):
-                if await self.sameChannel(ctx) != True:
-                    return False
-        else:
-            await ctx.send(f'Ya me encuentro reproduciendo música {str(ctx.author.mention)} Utiliza {self.prefix}stop')
+        if await self.isConectedChannel(ctx) == False:
+            await ctx.send(f'Tienes que conectar en el canal que me encuentro {str(ctx.author.mention)}')
             return False
+        elif await self.isConected(ctx) == False:
+            await ctx.send(f'Utiliza {self.prefix}conectar primero {str(ctx.author.mention)}')
+            return False
+        elif await self.isConected(ctx):
+            if await self.sameChannel(ctx) != True:
+                return False
         return True
     
     #validar si se puede cambiar el volumen

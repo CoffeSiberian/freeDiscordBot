@@ -19,38 +19,54 @@ class PlaySoundBot:
         self.ffmpeg = config['ffmpeg_dir']
         self.apiyt = yt_instance
         self.validacion = validaciones(bot)
-        self.queue = Queue()
+        self.queueObj = []
+
+    def createQueue(self, ctx):
+        self.queueObj.append(Queue(ctx.guild.id))
+        return ctx.guild.id
+    
+    def getQueue(self, ctx):
+        for r in self.queueObj:
+            if r.guildId == ctx.guild.id:
+                return (r)
+        return False
+    
+    def delQueue(self, obj):
+        self.queueObj.remove(obj)
 
     def pcmAudio(self, url):
         return discord.PCMVolumeTransformer(
             discord.FFmpegPCMAudio(source=url, executable=self.ffmpeg, **self.FFMPEG_OPTIONS))
-    
+
     async def playSound(self, ctx, *args):
-        self.addQueue(*args)
-        if self.queue.currentTrack != False:
-            await self.play(ctx)
+        queueobj = self.getQueue(ctx)
+        if queueobj == False:
+            self.createQueue(ctx)
+            queueobj = self.getQueue(ctx)
+        queueobj.add(*args)
+        if queueobj.currentTrack != False:
+            if ctx.voice_client.is_playing() == False:
+                await self.play(ctx, queueobj)
 
-    async def nextSound(self, ctx):
-        if self.queue.setNextTrack() != False:
-            await self.play(ctx)
+    async def nextSound(self, ctx, obj):
+        if obj.setNextTrack() != False:
+            return await self.play(ctx, obj)
+        self.delQueue(obj)
 
-    def addQueue(self, *args):
-        self.queue.add(*args)
-
-    def getOnlyUrl(self):
+    def getOnlyUrl(self, obj):
         '''
         if within the list there are strings that are not a 
         url they will be searched on youtube
         '''
-        value = self.queue.currentTrack
+        value = obj.currentTrack
         if value != False:
-            if self.validacion.isUrl('value'):
+            if self.validacion.isUrl(value.replace('-','')):
                 return value
             yplay = self.apiyt.search(value)
             return yplay["entries"][0]["url"]
 
-    async def play(self, ctx):
+    async def play(self, ctx, obj):
         ctx.voice_client.play(source=self.pcmAudio(
-            self.getOnlyUrl()), 
-            after=lambda : asyncio.run(await self.nextSound(ctx)))
+            self.getOnlyUrl(obj)),
+            after=lambda e: print('Player error: %s' % e) if e else asyncio.run(self.nextSound(ctx, obj)))
         ctx.voice_client.source.volume = self.voldef/100
