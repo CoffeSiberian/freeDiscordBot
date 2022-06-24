@@ -1,5 +1,3 @@
-import random
-
 class Queue:
 
     def __init__(self, guildId):
@@ -45,18 +43,25 @@ class Queue:
         self.position += 1
         try:
             elemen = self._queue[self.position]
-            return elemen, True
+            return elemen
         except IndexError:
             self.empty()
             return False
 
-    def shuffle(self):
+    def back(self):
         if not self._queue:
             return False
-        upcoming = self.upcoming
-        random.shuffle(upcoming)
-        self._queue = self._queue[:self.position + 1]
-        self._queue.extend(upcoming)
+        if self.position == 0:
+            return False
+        self.position -= 2
+    
+    def skip(self, pos):
+        if not self._queue:
+            return False
+        if  pos > 0 and pos > self.position and pos < len(self._queue):
+            self.position = pos-1
+            return True
+        return False
 
     def empty(self):
         self._queue.clear()

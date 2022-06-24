@@ -61,8 +61,29 @@ class Musica(commands.Cog):
     async def stop(self, ctx):
         if await self.validacion.isConected(ctx):
             if await self.validacion.sameChannel(ctx):
+                self.pmusic.commandsStop(ctx)
+                ctx.voice_client.stop()
+
+    @commands.command()
+    async def next(self, ctx):
+        if await self.validacion.isConected(ctx):
+            if await self.validacion.sameChannel(ctx):
                 ctx.voice_client.stop()
     
+    @commands.command()
+    async def back(self, ctx):
+        if await self.validacion.isConected(ctx):
+            if await self.validacion.sameChannel(ctx):
+                if self.pmusic.commandsBack(ctx) != False:
+                    ctx.voice_client.stop()
+
+    @commands.command()
+    async def skip(self, ctx, pos):
+        if await self.validacion.isConected(ctx):
+            if await self.validacion.sameChannel(ctx):
+                if self.pmusic.commandsSkip(ctx, int(pos)):
+                    ctx.voice_client.stop()
+
     @commands.command()
     async def vol(self, ctx, volume=-1):
         if await self.validacion.isPossibleChangeVol(ctx):
@@ -77,7 +98,8 @@ class Musica(commands.Cog):
         if parameter != '':
             if self.validacion.isUrl(parameter):
                 try:
-                    link = parameter.split(sep='.')[1]
+                    split = parameter.split(sep='.')[1]
+                    link = split.split(sep='/')[0]
                     if link == 'youtube' or link == 'be':
                         return await self.musicaYt.ytUrl(ctx, parameter)
                     elif link == 'spotify':

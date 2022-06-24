@@ -70,3 +70,24 @@ class PlaySoundBot:
             self.getOnlyUrl(obj)),
             after=lambda e: print('Player error: %s' % e) if e else asyncio.run(self.nextSound(ctx, obj)))
         ctx.voice_client.source.volume = self.voldef/100
+    
+    '''
+    Here are the functions to interact with the queue using commands
+    '''
+    def commandsStop(self, ctx):
+        obj = self.getQueue(ctx)
+        if obj != False:
+            obj.empty()
+        return False
+
+    def commandsBack(self, ctx):
+        obj = self.getQueue(ctx)
+        if obj != False:
+            return obj.back()
+        return False
+    
+    def commandsSkip(self, ctx, pos):
+        obj = self.getQueue(ctx)
+        if obj != False:
+            return obj.skip(pos)
+        return False
