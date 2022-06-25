@@ -34,4 +34,7 @@ class MusicaSP:
                 return await ctx.send(f'Escuchas: {track[0]} - Volumen: {str(self.voldef)}')
     
     async def spPlayPlayList(self, ctx, id):
-        pass
+        if await self.validacion.isPossiblePlay(ctx):
+            track = self.apisp.getTracksPlaylist(id)
+            if track[1] == 200:
+                await self.pmusic.playSound(ctx, track[0])

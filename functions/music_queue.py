@@ -32,6 +32,8 @@ class Queue:
         return len(self._queue)
 
     def add(self, *args):
+        if type(args[0]) is list:
+            return self._queue.extend(args[0])
         self._queue.extend(args)
 
     def setNextTrack(self):
