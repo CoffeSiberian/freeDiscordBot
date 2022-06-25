@@ -8,8 +8,7 @@ class Bot(commands.Bot):
     
     def __init__(self, command_prefix):
         self.prefix = command_prefix
-        commands.Bot.__init__(self, command_prefix=command_prefix)
-        self.add_commands()
+        commands.Bot.__init__(self, command_prefix=command_prefix, intents=discord.Intents.all())
     
     # Startup Information
     async def on_ready(self):
@@ -17,7 +16,5 @@ class Bot(commands.Bot):
         await self.change_presence(
             activity=discord.Activity(
                 type=discord.ActivityType.listening, name=f'Use {self.prefix}'))
-    
-    def add_commands(self):
-        self.add_cog(comandos(self))
-        self.add_cog(Musica(self))
+        await self.add_cog(comandos(self))
+        await self.add_cog(Musica(self))
