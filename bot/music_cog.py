@@ -5,6 +5,7 @@ from bot.nocogs.validations import validaciones
 from bot.nocogs.play_sound import PlaySoundBot
 from bot.nocogs.spotify_music import MusicaSP
 from bot.nocogs.youtube_music import MusicaYT
+from bot.nocogs.base_msj import *
 from apis.youtubeapi import youtube
 from apis.spotifyapi import spotifyPlay
 
@@ -83,6 +84,17 @@ class Musica(commands.Cog):
             if await self.validacion.sameChannel(ctx):
                 if self.pmusic.commandsSkip(ctx, int(pos)):
                     ctx.voice_client.stop()
+
+    @commands.command()
+    async def queue(self, ctx):
+        remaining = self.pmusic.remainingQueue(ctx)
+        if remaining != False:
+            await musicQueueList(ctx, remaining)
+
+    #only for test
+    @commands.command()
+    async def test(self, ctx):
+        self.pmusic.test(ctx)
 
     @commands.command()
     async def vol(self, ctx, volume=-1):

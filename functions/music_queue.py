@@ -3,6 +3,7 @@ class Queue:
     def __init__(self, guildId):
         self.guildId = guildId
         self._queue = []
+        self.nameMusic = []
         self.position = 0
 
     @property
@@ -19,22 +20,25 @@ class Queue:
     def upcoming(self):
         if not self._queue:
             return False
-        return self._queue[self.position + 1:]
+        return self._queue[self.position + 1:], self.nameMusic[self.position + 1:]
 
     @property
     def history(self):
         if not self._queue:
             return False
-        return self._queue[:self.position]
+        return self._queue[:self.position], self.nameMusic[:self.position]
 
     @property
     def length(self):
         return len(self._queue)
 
-    def add(self, *args):
+    def add(self, *args, names):
         if type(args[0]) is list:
-            return self._queue.extend(args[0])
+            self._queue.extend(args[0])
+            self.nameMusic.extend(names)
+            return True
         self._queue.extend(args)
+        self.nameMusic.extend([names])
 
     def setNextTrack(self):
         ''' 
@@ -68,3 +72,8 @@ class Queue:
     def empty(self):
         self._queue.clear()
         self.position = 0
+    
+    #only for test
+    def test(self):
+        print(self.history)
+        print(self.upcoming)
