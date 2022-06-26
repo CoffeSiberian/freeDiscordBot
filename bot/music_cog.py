@@ -89,7 +89,7 @@ class Musica(commands.Cog):
     async def queue(self, ctx):
         remaining = self.pmusic.remainingQueue(ctx)
         if remaining != False:
-            await musicQueueList(ctx, remaining)
+            await musicQueueList(ctx, remaining[0], remaining[1], currentTrack=remaining[2])
 
     #only for test
     @commands.command()
@@ -127,5 +127,5 @@ class Musica(commands.Cog):
 
     async def urlPlay(self, ctx, stream):
         if await self.validacion.isPossiblePlay(ctx):
-            await self.pmusic.playSound(ctx, stream)
+            await self.pmusic.playSound(ctx, stream, names=stream, img='https://i.imgur.com/quCneT8.png')
             await ctx.send(f'Escuchas: {stream} - Volumen: {str(self.voldef)}')

@@ -4,6 +4,7 @@ class Queue:
         self.guildId = guildId
         self._queue = []
         self.nameMusic = []
+        self.imgMusic = []
         self.position = 0
 
     @property
@@ -15,6 +16,18 @@ class Queue:
         if not self._queue:
             return False
         return self._queue[self.position]
+
+    @property
+    def currentTrackImg(self):
+        if not self._queue:
+            return False
+        return self.imgMusic[self.position]
+
+    @property
+    def currentTrackName(self):
+        if not self._queue:
+            return False
+        return self.nameMusic[self.position]
 
     @property
     def upcoming(self):
@@ -32,13 +45,15 @@ class Queue:
     def length(self):
         return len(self._queue)
 
-    def add(self, *args, names):
+    def add(self, *args, names, img):
         if type(args[0]) is list:
             self._queue.extend(args[0])
             self.nameMusic.extend(names)
+            self.imgMusic.extend(img)
             return True
         self._queue.extend(args)
         self.nameMusic.extend([names])
+        self.imgMusic.extend([img])
 
     def setNextTrack(self):
         ''' 
@@ -71,9 +86,12 @@ class Queue:
 
     def empty(self):
         self._queue.clear()
+        self.nameMusic.clear()
+        self.imgMusic.clear()
         self.position = 0
     
     #only for test
     def test(self):
         print(self.history)
         print(self.upcoming)
+        print(self.imgMusic)

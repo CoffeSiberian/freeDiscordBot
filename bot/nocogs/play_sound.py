@@ -38,12 +38,12 @@ class PlaySoundBot:
         return discord.PCMVolumeTransformer(
             discord.FFmpegPCMAudio(source=url, executable=self.ffmpeg, **self.FFMPEG_OPTIONS))
 
-    async def playSound(self, ctx, *args, names):
+    async def playSound(self, ctx, *args, names, img):
         queueobj = self.getQueue(ctx)
         if queueobj == False:
             self.createQueue(ctx)
             queueobj = self.getQueue(ctx)
-        queueobj.add(*args, names=names)
+        queueobj.add(*args, names=names, img=img)
         if queueobj.currentTrack != False:
             if ctx.voice_client.is_playing() == False:
                 await self.play(ctx, queueobj)
@@ -95,7 +95,8 @@ class PlaySoundBot:
     def remainingQueue(self, ctx):
         obj = self.getQueue(ctx)
         if obj != False:
-            return obj.remaining()
+            return obj.upcoming[1], obj.currentTrackImg, obj.currentTrackName
+        return False
     
     #only for test
     def test(self, ctx):

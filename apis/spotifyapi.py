@@ -43,6 +43,7 @@ class spotifyPlay:
         except KeyError:
             return [get_json['error']['message'], get_json['error']['status']]
         rescueTracks = []
+        rescueImg = []
         iterator = 0
         while True:
             if iterator == 100:
@@ -54,11 +55,13 @@ class spotifyPlay:
             try:
                 name = playlist['items'][iterator]['track']['name']
                 artists = playlist['items'][iterator]['track']['artists'][0]['name']
+                img = playlist['items'][iterator]['track']['album']['images'][0]['url']
                 rescueTracks.append(f'{name} {artists}')
+                rescueImg.append(img)
                 iterator += 1
             except IndexError:
                 break
-        return rescueTracks, 200, get_json['name']
+        return rescueTracks, 200, get_json['name'], rescueImg
     
     def getTrack(self, id) -> list:
         url = f'https://api.spotify.com/v1/tracks/{id}'
@@ -73,4 +76,4 @@ class spotifyPlay:
         except KeyError:
             return [get_json['error']['message'], get_json['error']['status']]
         rescueTrack = f'{name} - {artists}'
-        return rescueTrack, 200
+        return rescueTrack, 200, get_json['album']['images'][0]['url']
