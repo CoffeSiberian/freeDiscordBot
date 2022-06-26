@@ -24,7 +24,6 @@ class MusicaYT:
             yplay = self.apiyt.findVideoInfoURL(url)
             if await self.afterPlay(ctx, yplay):
                 await self.pmusic.playSound(ctx, yplay['url'], names=yplay["title"], img=yplay['thumbnails'][3]['url'])
-                return await ctx.send(f'Escuchas: {yplay["title"]} - Volumen: {str(self.voldef)}')
 
     async def ytSearch(self, ctx, url):
         if await self.validacion.isPossiblePlay(ctx):
@@ -33,4 +32,3 @@ class MusicaYT:
                 await self.pmusic.playSound(ctx, yplay["entries"][0]["url"], 
                 names=yplay["entries"][0]["title"], 
                 img=yplay["entries"][0]['thumbnails'][3]['url'])
-                return await ctx.send(f'Escuchas: {yplay["entries"][0]["title"]} - Volumen: {str(self.voldef)}')

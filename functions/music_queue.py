@@ -28,6 +28,18 @@ class Queue:
         if not self._queue:
             return False
         return self.nameMusic[self.position]
+    
+    @property
+    def lastTrackName(self):
+        if not self._queue:
+            return False
+        return self.nameMusic[len(self.nameMusic)-1]
+
+    @property
+    def lastTrackImg(self):
+        if not self._queue:
+            return False
+        return self.imgMusic[len(self.imgMusic)-1]
 
     @property
     def upcoming(self):
@@ -89,9 +101,3 @@ class Queue:
         self.nameMusic.clear()
         self.imgMusic.clear()
         self.position = 0
-    
-    #only for test
-    def test(self):
-        print(self.history)
-        print(self.upcoming)
-        print(self.imgMusic)
