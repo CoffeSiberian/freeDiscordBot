@@ -1,10 +1,10 @@
 import discord
 import asyncio
 
-from functions.music_queue import Queue
+from bot.nocogs.music.music_queue import Queue
 from functions.dirt import getConf
-from bot.nocogs.validations import validaciones
-from bot.nocogs.base_msj import *
+from bot.nocogs.music.validations import validaciones
+from bot.nocogs.messages.base_msj import *
 
 config = getConf()
 

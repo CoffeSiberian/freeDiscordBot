@@ -1,6 +1,6 @@
 from functions.dirt import getConf
-from functions.spotify_url_validatio import idAndType
-from bot.nocogs.validations import validaciones
+from bot.nocogs.music.spotify_url_validatio import idAndType
+from bot.nocogs.music.validations import validaciones
 
 config = getConf()
 

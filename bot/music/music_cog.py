@@ -1,11 +1,11 @@
 from discord.ext import commands
 
 from functions.dirt import getConf
-from bot.nocogs.validations import validaciones
-from bot.nocogs.play_sound import PlaySoundBot
-from bot.nocogs.spotify_music import MusicaSP
-from bot.nocogs.youtube_music import MusicaYT
-from bot.nocogs.base_msj import musicQueueList
+from bot.nocogs.music.validations import validaciones
+from bot.nocogs.music.play_sound import PlaySoundBot
+from bot.nocogs.music.spotify_music import MusicaSP
+from bot.nocogs.music.youtube_music import MusicaYT
+from bot.nocogs.messages.base_msj import musicQueueList
 from apis.youtubeapi import youtube
 from apis.spotifyapi import spotifyPlay
 

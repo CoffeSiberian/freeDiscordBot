@@ -2,7 +2,7 @@ from discord.ext import commands
 import discord
 
 from bot.commands_cog import comandos
-from bot.music_cog import Musica
+from bot.music.music_cog import Musica
 
 class Bot(commands.Bot):
     
@@ -15,6 +15,9 @@ class Bot(commands.Bot):
         print(f'Connected to bot: {self.user.name}')
         await self.change_presence(
             activity=discord.Activity(
-                type=discord.ActivityType.listening, name=f'Use {self.prefix}'))
+            type=discord.ActivityType.listening, name=f'Use {self.prefix}'))
+        await self.cogsAdd()
+
+    async def cogsAdd(self):
         await self.add_cog(comandos(self))
         await self.add_cog(Musica(self))

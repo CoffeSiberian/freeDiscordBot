@@ -1,5 +1,5 @@
 from functions.dirt import getConf
-from bot.nocogs.validations import validaciones
+from bot.nocogs.music.validations import validaciones
 
 config = getConf()
 
