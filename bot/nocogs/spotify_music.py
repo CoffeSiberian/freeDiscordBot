@@ -31,7 +31,6 @@ class MusicaSP:
             if track[1] == 200:
                 yplay = self.apiyt.search(track[0])
                 await self.pmusic.playSound(ctx, yplay["entries"][0]["url"], names=track[0], img=track[2])
-                return await ctx.send(f'Escuchas: {track[0]} - Volumen: {str(self.voldef)}')
     
     async def spPlayPlayList(self, ctx, id):
         '''

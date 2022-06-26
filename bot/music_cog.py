@@ -5,7 +5,7 @@ from bot.nocogs.validations import validaciones
 from bot.nocogs.play_sound import PlaySoundBot
 from bot.nocogs.spotify_music import MusicaSP
 from bot.nocogs.youtube_music import MusicaYT
-from bot.nocogs.base_msj import *
+from bot.nocogs.base_msj import musicQueueList
 from apis.youtubeapi import youtube
 from apis.spotifyapi import spotifyPlay
 
@@ -91,11 +91,6 @@ class Musica(commands.Cog):
         if remaining != False:
             await musicQueueList(ctx, remaining[0], remaining[1], currentTrack=remaining[2])
 
-    #only for test
-    @commands.command()
-    async def test(self, ctx):
-        self.pmusic.test(ctx)
-
     @commands.command()
     async def vol(self, ctx, volume=-1):
         if await self.validacion.isPossibleChangeVol(ctx):
@@ -128,4 +123,3 @@ class Musica(commands.Cog):
     async def urlPlay(self, ctx, stream):
         if await self.validacion.isPossiblePlay(ctx):
             await self.pmusic.playSound(ctx, stream, names=stream, img='https://i.imgur.com/quCneT8.png')
-            await ctx.send(f'Escuchas: {stream} - Volumen: {str(self.voldef)}')

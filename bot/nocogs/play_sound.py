@@ -4,6 +4,7 @@ import asyncio
 from functions.music_queue import Queue
 from functions.dirt import getConf
 from bot.nocogs.validations import validaciones
+from bot.nocogs.base_msj import *
 
 config = getConf()
 
@@ -15,6 +16,7 @@ class PlaySoundBot:
         '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 
         'options': '-vn'
         }
+        self.bot=bot
         self.voldef = config['volumen']
         self.ffmpeg = config['ffmpeg_dir']
         self.apiyt = yt_instance
@@ -47,10 +49,18 @@ class PlaySoundBot:
         if queueobj.currentTrack != False:
             if ctx.voice_client.is_playing() == False:
                 await self.play(ctx, queueobj)
+            if type(args[0]) is list:
+                await self.infoMusicMsjQueue(ctx, items=len(args[0]))
+                await self.infoMusicMsj(ctx)
+            else:
+                await self.infoMusicMsjQueue(ctx)
+                await self.infoMusicMsj(ctx)
 
     async def nextSound(self, ctx, obj):
         if obj.setNextTrack() != False:
-            return await self.play(ctx, obj)
+            await self.play(ctx, obj)
+            await self.infoMusicMsj(ctx)
+            return
         self.delQueue(obj)
 
     def getOnlyUrl(self, obj):
@@ -68,9 +78,37 @@ class PlaySoundBot:
     async def play(self, ctx, obj):
         ctx.voice_client.play(source=self.pcmAudio(
             self.getOnlyUrl(obj)),
-            after=lambda e: print('Player error: %s' % e) if e else asyncio.run(self.nextSound(ctx, obj)))
+            after=lambda e: print('Player error: %s' % e) if e else asyncio.run_coroutine_threadsafe(self.nextSound(ctx, obj), self.bot.loop))
         ctx.voice_client.source.volume = self.voldef/100
-    
+        
+
+    '''
+    Here are the informative messages of the state of the music
+    '''
+    async def infoMusicMsj(self, ctx):
+        obj = self.getQueue(ctx)
+        if obj != False:
+            await musicInfo(
+            ctx, 
+            obj.currentTrackName, 
+            ctx.author.display_name, 
+            ctx.author.avatar, 
+            obj.currentTrackImg, 
+            self.voldef
+            )
+
+    async def infoMusicMsjQueue(self, ctx, items=1):
+        obj = self.getQueue(ctx)
+        if obj != False:
+            await musicAdded(
+            ctx, 
+            items,
+            obj.lastTrackName, 
+            ctx.author.display_name, 
+            ctx.author.avatar, 
+            obj.lastTrackImg
+            )
+
     '''
     Here are the functions to interact with the queue using commands
     '''
@@ -97,9 +135,3 @@ class PlaySoundBot:
         if obj != False:
             return obj.upcoming[1], obj.currentTrackImg, obj.currentTrackName
         return False
-    
-    #only for test
-    def test(self, ctx):
-        obj = self.getQueue(ctx)
-        if obj != False:
-            return obj.test()
