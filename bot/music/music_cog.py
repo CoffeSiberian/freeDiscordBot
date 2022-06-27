@@ -6,6 +6,7 @@ from bot.nocogs.music.play_sound import PlaySoundBot
 from bot.nocogs.music.spotify_music import MusicaSP
 from bot.nocogs.music.youtube_music import MusicaYT
 from bot.nocogs.messages.base_msj import musicQueueList
+from bot.nocogs.messages.buttons import QueueButton
 from apis.youtubeapi import youtube
 from apis.spotifyapi import spotifyPlay
 
@@ -89,7 +90,8 @@ class Musica(commands.Cog):
     async def queue(self, ctx):
         remaining = self.pmusic.remainingQueue(ctx)
         if remaining != False:
-            await musicQueueList(ctx, remaining[0], remaining[1], currentTrack=remaining[2])
+            embed = musicQueueList(len(remaining[0]), remaining[1], remaining[2])
+            await ctx.send(embed=embed, view=QueueButton(embed=embed, upcoming=remaining[0]))
 
     @commands.command()
     async def vol(self, ctx, volume=-1):
