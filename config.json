@@ -2,9 +2,7 @@
     "DISCORD_TOKEN" : "",
     "spotify_clienId": "",
     "spotify_cliensecret": "",
-    "volumen" : 8,
+    "volumen" : 5,
     "ffmpeg_dir" : "ffmpeg",
-    "owner_id" : ,
-    "adm_role_id" : ,
     "prefix" : "!"
 }
