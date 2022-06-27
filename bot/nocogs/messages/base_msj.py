@@ -15,12 +15,11 @@ async def musicAdded(ctx, items, songName, autor, autorImg, soundImg):
     embed.set_footer(icon_url='https://i.imgur.com/qS4B6Ux.png', text='by: Github.com/CoffeSiberian')
     await ctx.send(embed=embed)
 
-def musicQueueList(total, currentTrackImg, currentTrackName):
+def musicQueueList(currentTrackImg, currentTrackName):
     embed=discord.Embed(title=f'Escuchas - {currentTrackName}', 
     description='Utiliza next para la siguiente canción o skip para una canción de la lista de espera', 
     color=0xdc21eb)
 
-    embed.add_field(name='Cola de musica', value=f'Existen {total} canciones en cola' , inline=False)
     embed.set_thumbnail(url=currentTrackImg)
     embed.set_footer(icon_url='https://i.imgur.com/qS4B6Ux.png', text='by: Github.com/CoffeSiberian')
     return embed

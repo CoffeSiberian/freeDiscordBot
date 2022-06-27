@@ -90,7 +90,7 @@ class Musica(commands.Cog):
     async def queue(self, ctx):
         remaining = self.pmusic.remainingQueue(ctx)
         if remaining != False:
-            embed = musicQueueList(len(remaining[0]), remaining[1], remaining[2])
+            embed = musicQueueList(remaining[1], remaining[2])
             await ctx.send(embed=embed, view=QueueButton(embed=embed, upcoming=remaining[0]))
 
     @commands.command()
