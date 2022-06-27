@@ -49,12 +49,11 @@ class PlaySoundBot:
         if queueobj.currentTrack != False:
             if ctx.voice_client.is_playing() == False:
                 await self.play(ctx, queueobj)
+                await self.infoMusicMsj(ctx)
             if type(args[0]) is list:
                 await self.infoMusicMsjQueue(ctx, items=len(args[0]))
-                await self.infoMusicMsj(ctx)
             else:
                 await self.infoMusicMsjQueue(ctx)
-                await self.infoMusicMsj(ctx)
 
     async def nextSound(self, ctx, obj):
         if obj.setNextTrack() != False:

@@ -61,6 +61,9 @@ class QueueButton(discord.ui.View):
         self.page = page
         if int(split[1]) != 0:
             self.count.label = f'Page {self.page}/{int(split[0])+1}'
+            return
+        if int(split[0]) == 0:
+            self.count.label = f'Page {self.page}/{int(split[0])+1}'
         else:
             self.count.label = f'Page {self.page}/{int(split[0])}'
 
