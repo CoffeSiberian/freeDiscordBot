@@ -91,8 +91,8 @@ class Queue:
     def skip(self, pos):
         if not self._queue:
             return False
-        if  pos > 0 and pos > self.position and pos < len(self._queue):
-            self.position = pos-1
+        if  pos > 0 and pos <= len(self.nameMusic[self.position + 1:]):
+            self.position += pos-1
             return True
         return False
 

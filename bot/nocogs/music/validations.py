@@ -32,7 +32,8 @@ class validaciones:
     async def sameChannel(self, ctx):
         if await self.isConectedChannel(ctx):
             if ctx.author.voice.channel.id != ctx.voice_client.channel.id:
-                return await ctx.send(f'Tienes que conectar en el canal que me encuentro {str(ctx.author.mention)}')
+                await ctx.send(f'Tienes que conectar en el canal que me encuentro {str(ctx.author.mention)}')
+                return False
             return True
 
     #valida si existe musica actualmente en reproduccion

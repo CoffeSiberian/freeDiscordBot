@@ -47,16 +47,16 @@ class Musica(commands.Cog):
 
     @commands.command()
     async def pausa(self, ctx):
-        if self.validacion.isConected:
-            if self.validacion.sameChannel:
-                if self.validacion.isPlaying:
+        if await self.validacion.isConected(ctx):
+            if await self.validacion.sameChannel(ctx):
+                if await self.validacion.isPlaying(ctx):
                     return ctx.voice_client.pause()
 
     @commands.command()
     async def continuar(self, ctx):
-        if self.validacion.isConected:
-            if self.validacion.sameChannel:
-                if self.validacion.isPlaying:
+        if await self.validacion.isConected(ctx):
+            if await self.validacion.sameChannel(ctx):
+                if await self.validacion.isPlaying(ctx):
                     return ctx.voice_client.resume()
 
     @commands.command()
